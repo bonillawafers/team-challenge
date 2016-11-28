@@ -80,18 +80,18 @@ class SignUpForm extends React.Component {
  */
 class EmailInput extends React.Component {
   validate(currentValue){
-    if(currentValue === ''){ //check presence
+    if(currentValue === ''){ //if current value is empty, input is not valid
       return {missing: true, isValid: false}
     }
 
     //check email validity
     //pattern comparison from w3c https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
     var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(currentValue)
-    if(!valid){
+    if(!valid){ //if not valid, return that the email is invalid and isvalid is false
       return {invalidEmail:true, isValid:false};
     }    
 
-    return {isValid: true}; //no errors
+    return {isValid: true}; //no errors 
   }  
 
   handleChange(event){  
@@ -124,7 +124,7 @@ class EmailInput extends React.Component {
         {errors.missing &&
           <p className="help-block error-missing">we need to know your email address</p>
         }
-        {errors.invalid &&
+        {errors.invalidEmail &&
           <p className="help-block error-invalid">this is not a valid email address</p>
         }
       </div>
