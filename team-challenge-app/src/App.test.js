@@ -16,7 +16,6 @@ describe('<EmailInput />', () => {
   it('should show required error message if left blank', () => {
     wrapper = shallow(<EmailInput value="" />);
     const input = wrapper.find('.error-missing');
-    console.log(wrapper.html());
     expect(input.text()).toEqual("we need to know your email address");
   })
 
@@ -28,7 +27,8 @@ describe('<EmailInput />', () => {
 
   it('should not show error message if input is valid', () => {
     wrapper = shallow(<EmailInput value="hi@hi.com" />);
-    
+    const input = wrapper.find('.form-control');
+    expect(input.text()).toEqual("");
   })
 })
 
@@ -50,6 +50,12 @@ describe('<BirthdayInput />', () => {
     wrapper = shallow(<BirthdayInput value="2015-09-06" />);
     const input = wrapper.find('.error-not-old');
     expect(input.text()).toEqual("sorry, you must be at least 13 to sign up");
+  })
+
+  it('should not show error message if person is old enough', () => {
+    wrapper = shallow(<EmailInput value="1995-09-06" />);
+    const input = wrapper.find('.form-control');
+    expect(input.text()).toEqual("");
   })
 })
 
