@@ -25,8 +25,13 @@ class SignUpForm extends React.Component {
   //callback for the reset button
   handleReset(event) {
     console.log('Reset!');
-    var emptyState = {};
-    this.setState(emptyState);
+    this.setState({
+      email:{value:'',valid:false}, 
+      name:{value:'',valid:false},
+      dob:{value:'',valid:false},
+      password:{value:'',valid:false},
+      passwordConf:{value:'',valid:false}
+    });
   }
 
   //callback for the submit button
