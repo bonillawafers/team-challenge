@@ -25,8 +25,13 @@ class SignUpForm extends React.Component {
   //callback for the reset button
   handleReset(event) {
     console.log('Reset!');
-    var emptyState = {};
-    this.setState(emptyState);
+    this.setState({
+      email:{value:'',valid:false}, 
+      name:{value:'',valid:false},
+      dob:{value:'',valid:false},
+      password:{value:'',valid:false},
+      passwordConf:{value:'',valid:false}
+    });
   }
 
   //callback for the submit button
@@ -199,7 +204,7 @@ class BirthdayInput extends React.Component {
     var d = new Date(); //today
     d.setYear(d.getFullYear() - 13); //subtract 13 from the year
     var minTimestamp = d.getTime();
-    if(timestamp < minTimestamp){
+    if(minTimestamp < timestamp){
       return {notOldEnough:true, isValid:false}
     }
 
@@ -229,7 +234,7 @@ class BirthdayInput extends React.Component {
     return (
       <div className={inputStyle}>
         <label htmlFor="dob">Birthdate</label>
-        <input type="text" id="dob" name="dob" className="form-control" placeholder="your birthdate"
+        <input type="text" id="dob" name="dob" className="form-control" placeholder="YYYY-MM-DD"
                 value={this.props.value}
                 onChange={(e) => this.handleChange(e)}
         />
@@ -253,7 +258,7 @@ class BirthdayInput extends React.Component {
  */
 class PasswordConfirmationInput extends React.Component {
   validate(currentValue){
-    if(currentValue === '' || this.props.password === ''){ //check both entries
+    if(currentValue !== (this.props.password)){ //check both entries
       return {mismatched:true, isValid:false};
     }    
 
@@ -266,7 +271,7 @@ class PasswordConfirmationInput extends React.Component {
 
     //what to assign to parent's state
     var stateUpdate = {
-      'passConf': {
+      'passwordConf': {
         value:event.target.value,
         valid:isValid
       }
