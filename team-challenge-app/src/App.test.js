@@ -1,28 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import {shallow, mount} from 'enzyme';
-import sinon from 'sinon';
-
+import {EmailInput} from './TeamSignUp';
+import {shallow} from 'enzyme';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(<App />, div);
 });
 
-describe('email form', () => {
+describe('<EmailInput />', () => {
+  var wrapper;
+
   it('should show required error message if left blank', () => {
-    const wrapper = shallow(<App />);
-    const input = wrapper.find('.help-block error-missing');
-    input.simulate('change', {target:{value:''}})
+    wrapper = shallow(<EmailInput value = ""/>);
+    const input = wrapper.find('.error-missing');
+    console.log(wrapper.html());
+    expect(input.text()).toEqual("we need to know your email address");
   })
 
   it('should show invalid error message if invalid input', () => {
-
+    wrapper = shallow(<EmailInput value = "blah"/>);
+    const input = wrapper.find('.error-invalid');
+    expect(input.text()).toEqual("this is not a valid email address");
   })
 
   it('should not show error message if input is valid', () => {
-
+    wrapper = shallow(<EmailInput value = "hi@hi.com"/>);
+    
   })
 })
 

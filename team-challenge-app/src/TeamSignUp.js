@@ -199,7 +199,7 @@ class BirthdayInput extends React.Component {
     var d = new Date(); //today
     d.setYear(d.getFullYear() - 13); //subtract 13 from the year
     var minTimestamp = d.getTime();
-    if(timestamp < minTimestamp){
+    if(minTimestamp < timestamp){
       return {notOldEnough:true, isValid:false}
     }
 
