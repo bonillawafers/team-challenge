@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import sinon from 'sinon';
-import {SignUpForm, EmailInput, BirthdayInput, PasswordConfirmationInput, RequiredInput} from './TeamSignUp';
+import SignUpForm from './TeamSignUp';
+import {EmailInput, BirthdayInput, PasswordConfirmationInput, RequiredInput} from './TeamSignUp';
 import {shallow, mount} from 'enzyme';
 
 it('renders without crashing', () => {
@@ -84,22 +85,15 @@ describe('handleReset', () => {
 
 });
 
-//me
 
 describe('password fields', () => {
-  it('should not show password mismatch error if password and password confirmation fields match', () => {
-
+  it('should show password mismatch error if password and password confirmation fields match', () => {
     const wrapper = shallow(<RequiredInput value="hello" type="password"/>);
     console.log(wrapper.html());
-    const wrapperPasswordConf = shallow(<PasswordConfirmationInput value ="hello" />);
-
-    // const passConfInput = wrapperPasswordConf.find('input');    
-    // const input = wrapper.find('input');
-    // console.log(wrapper.html());
-    // const errorText = wrapper.find('.error-missing');
-    // console.log(errorText.html());
-    // expect(errorText.text()).toEqual("");
-    expect(wrapperPasswordConf.containsMatchingElement(<p className="help-block error-mismatched">passwords don't match</p>)).toEqual(false);    
+    const wrapperPasswordConf = shallow(<PasswordConfirmationInput value="hello1" />);
+    console.log(wrapperPasswordConf.html());
+    const input = wrapperPasswordConf.find('.error-mismatched');
+    expect(input.text()).toEqual("passwords don't match");    
    });
    
 });
@@ -109,16 +103,12 @@ describe('<RequiredInput /> component', () => {
     it('should show required error message if left blank', () => {
         wrapper = shallow(<RequiredInput value="" errorMessage="we need to know your name"/>);
         expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(true);
-        console.log(wrapper.html());
         const input = wrapper.find('.error-missing');
-        console.log(input.html());
         expect(input.text()).toEqual("we need to know your name");
     });
 
     it('should not show required error message if input has value', () => {
         wrapper = mount(<RequiredInput value="John Doe" errorMessage="we need to know your name"/>);
-        console.log(wrapper.html());
-        //const input = wrapper.find('p');
         expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(false);
     });
 
