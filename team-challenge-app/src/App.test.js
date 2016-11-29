@@ -27,7 +27,7 @@ describe('<EmailInput />', () => {
 
   it('should not show error message if input is valid', () => {
     wrapper = shallow(<EmailInput value="hi@hi.com" />);
-
+    
   })
 })
 
