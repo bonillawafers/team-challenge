@@ -229,7 +229,7 @@ class BirthdayInput extends React.Component {
     return (
       <div className={inputStyle}>
         <label htmlFor="dob">Birthdate</label>
-        <input type="text" id="dob" name="dob" className="form-control" placeholder="your birthdate"
+        <input type="text" id="dob" name="dob" className="form-control" placeholder="YYYY-MM-DD"
                 value={this.props.value}
                 onChange={(e) => this.handleChange(e)}
         />
@@ -253,7 +253,7 @@ class BirthdayInput extends React.Component {
  */
 class PasswordConfirmationInput extends React.Component {
   validate(currentValue){
-    if(currentValue === '' || this.props.password === ''){ //check both entries
+    if(currentValue !== (this.props.password)){ //check both entries
       return {mismatched:true, isValid:false};
     }    
 
@@ -266,7 +266,7 @@ class PasswordConfirmationInput extends React.Component {
 
     //what to assign to parent's state
     var stateUpdate = {
-      'passConf': {
+      'passwordConf': {
         value:event.target.value,
         valid:isValid
       }
