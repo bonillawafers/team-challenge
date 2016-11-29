@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import SignUpForm from './TeamSignUp';
 import { EmailInput, BirthdayInput } from './TeamSignUp';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
@@ -50,4 +51,24 @@ describe('<BirthdayInput />', () => {
     const input = wrapper.find('.error-not-old');
     expect(input.text()).toEqual("sorry, you must be at least 13 to sign up");
   })
+})
+
+describe('handleReset', () => {
+
+  it('should clear all input fields when reset is clicked', () => {
+    const wrapper = mount(<SignUpForm />);
+    const button = wrapper.find('#resetButton');
+    button.simulate('click');
+    var stateEmail = wrapper.state('email');
+    var stateName = wrapper.state('name');
+    var stateDOB = wrapper.state('dob');
+    var statePassword = wrapper.state('password');
+    var statePassConf = wrapper.state('passwordConf');
+    expect(stateEmail.value).toEqual('');
+    expect(stateName.value).toEqual('');
+    expect(stateDOB.value).toEqual('');
+    expect(statePassword.value).toEqual('');
+    expect(statePassConf.value).toEqual('');
+  })
+
 })
