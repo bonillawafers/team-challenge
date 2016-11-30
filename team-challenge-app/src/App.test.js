@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import sinon from 'sinon';
 import SignUpForm from './TeamSignUp';
-import { EmailInput, BirthdayInput } from './TeamSignUp';
-import { shallow, mount } from 'enzyme';
+import {EmailInput, BirthdayInput, PasswordConfirmationInput, RequiredInput} from './TeamSignUp';
+import {shallow, mount} from 'enzyme';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
@@ -16,7 +17,6 @@ describe('<EmailInput />', () => {
   it('should show required error message if left blank', () => {
     wrapper = shallow(<EmailInput value="" />);
     const input = wrapper.find('.error-missing');
-    console.log(wrapper.html());
     expect(input.text()).toEqual("we need to know your email address");
   })
 
@@ -28,7 +28,8 @@ describe('<EmailInput />', () => {
 
   it('should not show error message if input is valid', () => {
     wrapper = shallow(<EmailInput value="hi@hi.com" />);
-
+    const input = wrapper.find('.form-control');
+    expect(input.text()).toEqual("");
   })
 })
 
@@ -51,7 +52,24 @@ describe('<BirthdayInput />', () => {
     const input = wrapper.find('.error-not-old');
     expect(input.text()).toEqual("sorry, you must be at least 13 to sign up");
   })
+
+  it('should not show error message if person is old enough', () => {
+    wrapper = shallow(<EmailInput value="1995-09-06" />);
+    const input = wrapper.find('.form-control');
+    expect(input.text()).toEqual("");
+  })
 })
+
+  it ('should show not old enough message if under 13', () => {
+    //  const handleChangePassSpy = sinon.spy(PasswordInput.prototype, 'handleChange')
+    //  const handleChangePassConfSpy = sinon.spy(PasswordConfirmationInput.prototype, 'handleChange')
+
+    //  input.simulate('change', {target: {value:'hello'}});
+    //  passConfInput.simulate('change', {target: {value:'hello'}});
+
+    // expect(handleChangePassSpy.getCall(0).args[0]).toEqual('hello');
+    // expect(handleChangePassConfSpy.getCall(0).args[0]).toEqual('hello');
+  });
 
 describe('handleReset', () => {
 
@@ -69,9 +87,10 @@ describe('handleReset', () => {
     expect(stateDOB.value).toEqual('');
     expect(statePassword.value).toEqual('');
     expect(statePassConf.value).toEqual('');
-  })
+  });
 
 });
+
 
 describe('handleSubmit', () => {
   const wrapper = mount(<SignUpForm />);
@@ -110,3 +129,33 @@ describe('handleButton', () => {
   });
 
 })
+
+
+describe('password fields', () => {
+  it('should show password mismatch error if password and password confirmation fields match', () => {
+    const wrapper = shallow(<RequiredInput value="hello" type="password"/>);
+    console.log(wrapper.html());
+    const wrapperPasswordConf = shallow(<PasswordConfirmationInput value="hello1" />);
+    console.log(wrapperPasswordConf.html());
+    const input = wrapperPasswordConf.find('.error-mismatched');
+    expect(input.text()).toEqual("passwords don't match");    
+   });
+   
+});
+
+describe('<RequiredInput /> component', () => {
+    var wrapper;
+    it('should show required error message if left blank', () => {
+        wrapper = shallow(<RequiredInput value="" errorMessage="we need to know your name"/>);
+        expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(true);
+        const input = wrapper.find('.error-missing');
+        expect(input.text()).toEqual("we need to know your name");
+    });
+
+    it('should not show required error message if input has value', () => {
+        wrapper = mount(<RequiredInput value="John Doe" errorMessage="we need to know your name"/>);
+        expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(false);
+    });
+
+});
+
