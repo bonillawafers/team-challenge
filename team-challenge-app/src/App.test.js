@@ -125,6 +125,7 @@ describe('handleButton', () => {
      wrapper.find('EmailInput input').simulate('change', {target:{value:'l@l.com'}});
      wrapper.find('PasswordConfirmationInput input').simulate('change',{target:{value:'Anything'}}); 
      wrapper.find('BirthdayInput input').simulate('change',{target:{value:'1995-10-22'}});
+     console.log();
      expect(button.props().disabled).toEqual(false);    
   });
 
