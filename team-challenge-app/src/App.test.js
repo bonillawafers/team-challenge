@@ -71,4 +71,42 @@ describe('handleReset', () => {
     expect(statePassConf.value).toEqual('');
   })
 
+});
+
+describe('handleSubmit', () => {
+  const wrapper = mount(<SignUpForm />);
+
+  it('should not create an alert window when not clicked', () =>{
+    expect(wrapper.state('alert')).toEqual(false);
+  })
+  
+  it('should create an alert window when clicked', () => {
+    const button = wrapper.find('#submitButton');
+    button.simulate('click');
+    expect(wrapper.state('alert')).toEqual(true);
+  })
+});
+
+describe('handleButton', () => {
+
+  it('should not be clickable with valid fields', () => {
+    const wrapper = mount(<SignUpForm />);
+      const button = wrapper.find('#submitButton');
+
+    expect(button.props().disabled).toEqual(true);
+  });
+
+  it('should be clickable with valid fields', () => {
+       
+    const wrapper = mount(<SignUpForm />);
+    const button = wrapper.find('#submitButton');
+    
+     wrapper.find('#name').simulate('change',{target:{value:'Anything'}});
+     wrapper.find('#password').simulate('change',{target:{value:'Anything'}});
+     wrapper.find('EmailInput input').simulate('change', {target:{value:'l@l.com'}});
+     wrapper.find('PasswordConfirmationInput input').simulate('change',{target:{value:'Anything'}}); 
+     wrapper.find('BirthdayInput input').simulate('change',{target:{value:'1995-10-22'}});
+     expect(button.props().disabled).toEqual(false);    
+  });
+
 })

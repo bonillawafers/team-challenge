@@ -3,6 +3,7 @@ import React from 'react';
 /**
  * The overall form component
  */
+
 class SignUpForm extends React.Component {
   constructor(props){
     super(props);
@@ -11,7 +12,8 @@ class SignUpForm extends React.Component {
       name:{value:'',valid:false},
       dob:{value:'',valid:false},
       password:{value:'',valid:false},
-      passwordConf:{value:'',valid:false}
+      passwordConf:{value:'',valid:false},
+      alert: false,
     };
 
     this.updateState = this.updateState.bind(this); //bind for scope
@@ -30,7 +32,8 @@ class SignUpForm extends React.Component {
       name:{value:'',valid:false},
       dob:{value:'',valid:false},
       password:{value:'',valid:false},
-      passwordConf:{value:'',valid:false}
+      passwordConf:{value:'',valid:false},
+      alert: false
     });
   }
 
@@ -38,16 +41,26 @@ class SignUpForm extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     console.log('Submitted!');
-    this.props.submitCallback(this.state);
+    //this.props.submitCallback(this.state);
+    this.setState({alert:true});
   }
 
   render() {
     //if all fields are valid, button should be enabled
-    var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.isValid && this.state.password.valid);
+    var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.valid && this.state.password.valid && this.state.passwordConf.valid);
+
+    var content; 
+    if (this.state.alert){
+      content = <div className="alert alert-success" role="alert">Your Form Has Been Submitted!</div>;
+    } else {
+      <div/>;
+    }
+
 
     return (
+      
       <form name="signupForm" onSubmit={(e) => this.handleSubmit(e)}>
-
+        {content}
         <EmailInput value={this.state.email.value} updateParent={this.updateState} />
 
         <RequiredInput 
@@ -71,14 +84,13 @@ class SignUpForm extends React.Component {
         {/* Submit Buttons */}
         <div className="form-group">
           <button id="resetButton" type="reset" className="btn btn-default" onClick={(e)=>this.handleReset(e)}>Reset</button> {' ' /*space*/}
-          <button id="submitButton" type="submit" className="btn btn-primary" disabled={buttonEnabled}>Sign Me Up!</button>
+          <button id="submitButton" type="submit" className="btn btn-primary" disabled={!buttonEnabled} onClick={(e)=>this.handleSubmit(e)}>Sign Me Up!</button>
         </div>
 
       </form>
     );
   }
 }
-
 
 /**
  * A component representing a controlled input for an email address

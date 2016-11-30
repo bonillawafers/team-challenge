@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Jumbotron, Button } from 'react-bootstrap';
 import SignUpForm from './TeamSignUp.js';
+//import {Alert} from './TeamSignUp.js';
 
 class App extends Component {
   render() {
