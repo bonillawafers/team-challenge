@@ -13,7 +13,7 @@ class SignUpForm extends React.Component {
       dob:{value:'',valid:false},
       password:{value:'',valid:false},
       passwordConf:{value:'',valid:false},
-      alert: false,
+      alert: false, // state to keep track of alert status
     };
 
     this.updateState = this.updateState.bind(this); //bind for scope
@@ -27,13 +27,13 @@ class SignUpForm extends React.Component {
   //callback for the reset button
   handleReset(event) {
     console.log('Reset!');
-    this.setState({
+    this.setState({ // all fields are reset to empty Strings once clicked
       email:{value:'',valid:false}, 
       name:{value:'',valid:false},
       dob:{value:'',valid:false},
       password:{value:'',valid:false},
       passwordConf:{value:'',valid:false},
-      alert: false
+      alert: false // alert status back to false when reset clicked
     });
   }
 
@@ -50,7 +50,7 @@ class SignUpForm extends React.Component {
     var buttonEnabled = (this.state.email.valid && this.state.name.valid && this.state.dob.valid && this.state.password.valid && this.state.passwordConf.valid);
 
     var content; 
-    if (this.state.alert){
+    if (this.state.alert){ // conditional rendering of alert
       content = <div className="alert alert-success" role="alert">Your Form Has Been Submitted!</div>;
     } else {
       <div/>;
@@ -98,14 +98,14 @@ class SignUpForm extends React.Component {
 class EmailInput extends React.Component {
   validate(currentValue){
     if(currentValue === ''){ //if current value is empty, input is not valid
-      return {missing: true, isValid: false}
+      return {missing: true, isValid: false} //return that the input is missing and it's not valid
     }
 
     //check email validity
     //pattern comparison from w3c https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
     var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(currentValue)
     if(!valid){ //if not valid, return that the email is invalid and isvalid is false
-      return {invalidEmail:true, isValid:false};
+      return {invalidEmail:true, isValid:false}; //return that the email is invalid 
     }    
 
     return {isValid: true}; //no errors 
@@ -118,8 +118,8 @@ class EmailInput extends React.Component {
     //what to assign to parent's state
     var stateUpdate = {
       'email': {
-        value:event.target.value,
-        valid:isValid
+        value:event.target.value, //value is the user input
+        valid:isValid //input is valid email
       }
     };
 
@@ -132,15 +132,18 @@ class EmailInput extends React.Component {
     if(!errors.isValid) inputStyle += ' invalid'; //add styling rule
 
     return (
+      //html for the user input form for email
       <div className={inputStyle}>
         <label htmlFor="email">Email</label>
         <input type="email" id="email" name="email" className="form-control" placeholder="email address"
                 value={this.props.value}
                 onChange={(e) => this.handleChange(e)}
         />
+        {/* if form is empty show this error message*/}
         {errors.missing &&
-          <p className="help-block error-missing">we need to know your email address</p>
+          <p className="help-block error-missing">we need to know your email address</p> 
         }
+        {/* if user input is invalid show this error message*/}
         {errors.invalidEmail &&
           <p className="help-block error-invalid">this is not a valid email address</p>
         }
@@ -188,6 +191,7 @@ class RequiredInput extends React.Component {
                 value={this.props.value}
                 onChange={(e) => this.handleChange(e)}
         />
+        {/*Changed line 196 from {errors && <p...} to check the isvalid property of errors to render the error message, as it was not doing this before  */}
         {!errors.isValid &&
           <p className="help-block error-missing">{this.props.errorMessage}</p>
         }
@@ -216,8 +220,8 @@ class BirthdayInput extends React.Component {
     var d = new Date(); //today
     d.setYear(d.getFullYear() - 13); //subtract 13 from the year
     var minTimestamp = d.getTime();
-    if(minTimestamp < timestamp){
-      return {notOldEnough:true, isValid:false}
+    if(minTimestamp < timestamp){ //if minTimeStamp (users age) is less than current date minus 13
+      return {notOldEnough:true, isValid:false} //return that they aren't old enough and isnt valid
     }
 
     return {isValid: true}; //no errors
@@ -244,18 +248,22 @@ class BirthdayInput extends React.Component {
     if(!errors.isValid) inputStyle += ' invalid';
 
     return (
+      // form for user to input date of birth
       <div className={inputStyle}>
         <label htmlFor="dob">Birthdate</label>
         <input type="text" id="dob" name="dob" className="form-control" placeholder="YYYY-MM-DD"
                 value={this.props.value}
                 onChange={(e) => this.handleChange(e)}
         />
+        {/* if form is empty show this error message*/}
         {errors.missing &&
           <p className="help-block error-missing">we need to know your birthdate</p>
         }
+        {/* if form is not a valid date format show this error message*/}
         {errors.notDate &&
           <p className="help-block error-invalid">that isn't a valid date</p>
         }
+        {/* if the age inputed makes user less than 13 show this error message*/}
         {errors.notOldEnough &&
           <p className="help-block error-not-old">sorry, you must be at least 13 to sign up</p>
         }

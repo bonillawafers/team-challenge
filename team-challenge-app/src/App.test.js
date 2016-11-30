@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import sinon from 'sinon';
 import SignUpForm from './TeamSignUp';
-import {EmailInput, BirthdayInput, PasswordConfirmationInput, RequiredInput} from './TeamSignUp';
-import {shallow, mount} from 'enzyme';
+import { EmailInput, BirthdayInput, PasswordConfirmationInput, RequiredInput } from './TeamSignUp';
+import { shallow, mount } from 'enzyme';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
@@ -60,16 +60,9 @@ describe('<BirthdayInput />', () => {
   })
 })
 
-  it ('should show not old enough message if under 13', () => {
-    //  const handleChangePassSpy = sinon.spy(PasswordInput.prototype, 'handleChange')
-    //  const handleChangePassConfSpy = sinon.spy(PasswordConfirmationInput.prototype, 'handleChange')
+it('should show not old enough message if under 13', () => {
 
-    //  input.simulate('change', {target: {value:'hello'}});
-    //  passConfInput.simulate('change', {target: {value:'hello'}});
-
-    // expect(handleChangePassSpy.getCall(0).args[0]).toEqual('hello');
-    // expect(handleChangePassConfSpy.getCall(0).args[0]).toEqual('hello');
-  });
+});
 
 describe('handleReset', () => {
 
@@ -95,12 +88,17 @@ describe('handleReset', () => {
 describe('handleSubmit', () => {
   const wrapper = mount(<SignUpForm />);
 
-  it('should not create an alert window when not clicked', () =>{
+  it('should not create an alert window when not clicked', () => {
     expect(wrapper.state('alert')).toEqual(false);
   })
-  
+
   it('should create an alert window when clicked', () => {
     const button = wrapper.find('#submitButton');
+    wrapper.find('#name').simulate('change', { target: { value: 'Anything' } });
+    wrapper.find('#password').simulate('change', { target: { value: 'Anything' } });
+    wrapper.find('EmailInput input').simulate('change', { target: { value: 'l@l.com' } });
+    wrapper.find('PasswordConfirmationInput input').simulate('change', { target: { value: 'Anything' } });
+    wrapper.find('BirthdayInput input').simulate('change', { target: { value: '1995-10-22' } });
     button.simulate('click');
     expect(wrapper.state('alert')).toEqual(true);
   })
@@ -110,23 +108,22 @@ describe('handleButton', () => {
 
   it('should not be clickable with valid fields', () => {
     const wrapper = mount(<SignUpForm />);
-      const button = wrapper.find('#submitButton');
+    const button = wrapper.find('#submitButton');
 
     expect(button.props().disabled).toEqual(true);
   });
 
   it('should be clickable with valid fields', () => {
-       
+
     const wrapper = mount(<SignUpForm />);
     const button = wrapper.find('#submitButton');
-    
-     wrapper.find('#name').simulate('change',{target:{value:'Anything'}});
-     wrapper.find('#password').simulate('change',{target:{value:'Anything'}});
-     wrapper.find('EmailInput input').simulate('change', {target:{value:'l@l.com'}});
-     wrapper.find('PasswordConfirmationInput input').simulate('change',{target:{value:'Anything'}}); 
-     wrapper.find('BirthdayInput input').simulate('change',{target:{value:'1995-10-22'}});
-     console.log();
-     expect(button.props().disabled).toEqual(false);    
+
+    wrapper.find('#name').simulate('change', { target: { value: 'Anything' } });
+    wrapper.find('#password').simulate('change', { target: { value: 'Anything' } });
+    wrapper.find('EmailInput input').simulate('change', { target: { value: 'l@l.com' } });
+    wrapper.find('PasswordConfirmationInput input').simulate('change', { target: { value: 'Anything' } });
+    wrapper.find('BirthdayInput input').simulate('change', { target: { value: '1995-10-22' } });
+    expect(button.props().disabled).toEqual(false);
   });
 
 })
@@ -134,29 +131,27 @@ describe('handleButton', () => {
 
 describe('password fields', () => {
   it('should show password mismatch error if password and password confirmation fields match', () => {
-    const wrapper = shallow(<RequiredInput value="hello" type="password"/>);
-    console.log(wrapper.html());
+    const wrapper = shallow(<RequiredInput value="hello" type="password" />);
     const wrapperPasswordConf = shallow(<PasswordConfirmationInput value="hello1" />);
-    console.log(wrapperPasswordConf.html());
     const input = wrapperPasswordConf.find('.error-mismatched');
-    expect(input.text()).toEqual("passwords don't match");    
-   });
-   
+    expect(input.text()).toEqual("passwords don't match");
+  });
+
 });
 
 describe('<RequiredInput /> component', () => {
-    var wrapper;
-    it('should show required error message if left blank', () => {
-        wrapper = shallow(<RequiredInput value="" errorMessage="we need to know your name"/>);
-        expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(true);
-        const input = wrapper.find('.error-missing');
-        expect(input.text()).toEqual("we need to know your name");
-    });
+  var wrapper;
+  it('should show required error message if left blank', () => {
+    wrapper = shallow(<RequiredInput value="" errorMessage="we need to know your name" />);
+    expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(true);
+    const input = wrapper.find('.error-missing');
+    expect(input.text()).toEqual("we need to know your name");
+  });
 
-    it('should not show required error message if input has value', () => {
-        wrapper = mount(<RequiredInput value="John Doe" errorMessage="we need to know your name"/>);
-        expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(false);
-    });
+  it('should not show required error message if input has value', () => {
+    wrapper = mount(<RequiredInput value="John Doe" errorMessage="we need to know your name" />);
+    expect(wrapper.containsMatchingElement(<p className="help-block error-missing">we need to know your name</p>)).toEqual(false);
+  });
 
 });
 

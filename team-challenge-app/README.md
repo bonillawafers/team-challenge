@@ -6,7 +6,7 @@ The below questions should be answered regarding your submission!
 
 ##### Which team members were responsible for which features? #####
 > Marissa: email and birthdate 
-Aisha: Password and form submit
+Aisha: Password and name field
 Nick: Submit button
 Alex: Reset
 
